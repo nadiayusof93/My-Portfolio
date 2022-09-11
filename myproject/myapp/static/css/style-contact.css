@@ -61,7 +61,7 @@ p {
 .inputs input:focus {
     margin-bottom: 13px;
     border: none;
-    border-bottom: 2px solid #7B1FA2;
+    border-bottom: 2px solid #b7b7b7;
     box-shadow: none
 }
 
@@ -121,5 +121,9 @@ p label{
 }
 
 .form-control{
-    background: none !important
+    background: none !important;
+    color: #b7b7b7;
+}
+.form-control:focus{
+    color: #b7b7b7;
 }
