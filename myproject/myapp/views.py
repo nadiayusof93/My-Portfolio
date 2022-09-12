@@ -1,7 +1,8 @@
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .forms import ContactForm
+from .forms import Contact
+from .models import ContactForm
 from django.template.loader import render_to_string
  
 def index(request):
@@ -13,12 +14,18 @@ def home(request):
 def contact(request):
     print("hello")
     if request.method == 'POST':
-        form = ContactForm(request.POST)
+        form = Contact(request.POST)
         
         if form.is_valid():
             name = form.cleaned_data['Name']
             email = form.cleaned_data['Email']
             message = form.cleaned_data['Message']
+
+            db_contactform = ContactForm()
+            db_contactform.name = name
+            db_contactform.email = email
+            db_contactform.message = message
+            db_contactform.save()
 
             html = render_to_string('emails/contactform.html',{
                 'name' : name,
@@ -28,7 +35,7 @@ def contact(request):
             send_mail('Contact Us - ' + name, 'The message','admin@nadia.com',['admin@nadia.com'], html_message=html)
             return redirect('/contact')
     else:
-        form = ContactForm()
+        form = Contact()
 
     return render(request, 'contact.html', {
         'form' : form
